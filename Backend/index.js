@@ -1,6 +1,7 @@
  const express = require('express');
  const bodyParser = require('body-parser');
- const {PORT}=require('./Config')
+ const {PORT, mongoURL}=require('./Config')
+ const mongoose = require('mongoose');
 
 
 
@@ -11,7 +12,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
-app.listen(PORT,()=>{
-  console.log(`server is running in ${PORT}`);
-  
-})
+mongoose.connect(mongoURL)
+.then(()=>{
+    console.log("App Connected to mongo")
+    app.listen(PORT, ()=>{
+        console.log(` server Start in ${PORT}`);
+    })
+
+}
+    
+).catch((error)=>{
+    console.log(error)
+}
+)
